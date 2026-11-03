@@ -1,0 +1,18 @@
+# Instance-specific files: never commit
+config/config.php
+config/app.key
+config/installed.lock
+config/initial-admin.txt
+
+# Build output / dependencies (composer install; tools/make-release.php)
+vendor/
+dist/
+
+# Old prototypes and scratch
+legacy/
+legacy-v1/
+sidebar-component.html
+.claude/
+*.log
+*.bak
+tools/_*

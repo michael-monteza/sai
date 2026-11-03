@@ -1,0 +1,66 @@
+<?php
+// Well-known AI services and their AI-specific hostnames, used by tools/load-known-ai.php.
+// Deliberately NOT listed: broad shared domains (google.com, microsoft.com, github.com, amazon.com, notion.so, replit.com, ...)
+// because they carry large amounts of non-AI traffic. A domain is matched as "domain + subdomains".
+// Fields: name, provider, category, data class, scores (training exposure, vendor risk, identity risk, 0-100), description, domains ("host" or "host|type", first = primary).
+return [
+    // ---- assistants / chat ----
+    ['ChatGPT API & Platform', 'OpenAI', 'Developer API', 'Confidential', [55, 50, 60], 'OpenAI developer platform and API', ['platform.openai.com', 'api.openai.com|api', 'auth.openai.com|authentication']],
+    ['Claude API & Console', 'Anthropic', 'Developer API', 'Internal', [25, 30, 35], 'Anthropic developer console and API', ['console.anthropic.com', 'api.anthropic.com|api']],
+    ['Grok', 'xAI', 'Generative AI', 'Confidential', [75, 70, 70], 'xAI conversational assistant', ['grok.com', 'api.x.ai|api']],
+    ['Mistral Le Chat', 'Mistral AI', 'Generative AI', 'Confidential', [40, 35, 40], 'Mistral AI assistant and API', ['chat.mistral.ai', 'mistral.ai', 'api.mistral.ai|api']],
+    ['Groq', 'Groq', 'Developer API', 'Internal', [35, 40, 40], 'Fast inference cloud and chat', ['groq.com', 'console.groq.com', 'api.groq.com|api']],
+    ['Meta AI', 'Meta', 'Generative AI', 'Confidential', [80, 70, 70], 'Meta AI assistant', ['meta.ai']],
+    ['Poe', 'Quora', 'Generative AI', 'Confidential', [65, 60, 60], 'Multi-model chatbot aggregator', ['poe.com']],
+    ['Character.AI', 'Character Technologies', 'Generative AI', 'Confidential', [80, 70, 70], 'Persona chatbots', ['character.ai']],
+    ['Pi', 'Inflection AI', 'Generative AI', 'Confidential', [65, 55, 55], 'Personal AI assistant', ['pi.ai']],
+    ['You.com', 'You.com', 'AI Search', 'Confidential', [60, 55, 55], 'AI search assistant', ['you.com']],
+    ['Phind', 'Phind', 'AI Search', 'Internal', [50, 50, 50], 'AI search for developers', ['phind.com']],
+    ['Kimi', 'Moonshot AI', 'Generative AI', 'Confidential', [85, 90, 80], 'Moonshot AI assistant', ['kimi.com', 'kimi.moonshot.cn']],
+    ['Qwen', 'Alibaba Cloud', 'Generative AI', 'Confidential', [80, 85, 75], 'Alibaba Qwen assistant', ['chat.qwen.ai', 'qwenlm.ai']],
+    ['Doubao', 'ByteDance', 'Generative AI', 'Confidential', [85, 90, 80], 'ByteDance AI assistant', ['doubao.com']],
+    ['Ernie Bot', 'Baidu', 'Generative AI', 'Confidential', [80, 85, 75], 'Baidu Ernie assistant', ['yiyan.baidu.com']],
+    ['Google AI Studio', 'Google', 'Developer API', 'Internal', [30, 25, 30], 'Gemini developer studio and API', ['aistudio.google.com', 'generativelanguage.googleapis.com|api']],
+    ['NotebookLM', 'Google', 'Generative AI', 'Confidential', [35, 25, 30], 'AI research notebook', ['notebooklm.google.com']],
+    ['Azure OpenAI Service', 'Microsoft', 'Developer API', 'Internal', [10, 15, 15], 'OpenAI models on Azure (tenant endpoints)', ['openai.azure.com|api']],
+    ['IBM watsonx', 'IBM', 'Enterprise AI', 'Internal', [15, 20, 20], 'IBM watsonx platform', ['watsonx.ai', 'dataplatform.cloud.ibm.com']],
+    ['NVIDIA NIM / Build', 'NVIDIA', 'Developer API', 'Internal', [25, 25, 30], 'Hosted AI models and microservices', ['build.nvidia.com', 'integrate.api.nvidia.com|api']],
+    // ---- inference / model platforms ----
+    ['Cohere', 'Cohere', 'Developer API', 'Internal', [30, 30, 35], 'Enterprise language model API', ['cohere.com', 'dashboard.cohere.com', 'api.cohere.com|api']],
+    ['Together AI', 'Together Computer', 'Developer API', 'Internal', [35, 40, 40], 'Open-model inference cloud', ['together.ai', 'api.together.xyz|api']],
+    ['Replicate', 'Replicate', 'Model Hub', 'Internal', [30, 35, 35], 'Run open models via API', ['replicate.com']],
+    ['OpenRouter', 'OpenRouter', 'Developer API', 'Confidential', [55, 55, 55], 'Multi-provider LLM gateway', ['openrouter.ai']],
+    ['Fireworks AI', 'Fireworks AI', 'Developer API', 'Internal', [30, 35, 35], 'Model inference platform', ['fireworks.ai']],
+    ['Ollama', 'Ollama', 'Model Hub', 'Public', [10, 20, 15], 'Local model registry', ['ollama.com']],
+    ['LangSmith', 'LangChain', 'Developer Tooling', 'Confidential', [40, 35, 35], 'LLM tracing and evaluation (stores prompts)', ['smith.langchain.com']],
+    // ---- coding assistants / builders ----
+    ['Cursor', 'Anysphere', 'Coding Assistant', 'Confidential', [55, 50, 50], 'AI code editor', ['cursor.com', 'cursor.sh', 'api2.cursor.sh|api']],
+    ['Windsurf (Codeium)', 'Cognition / Codeium', 'Coding Assistant', 'Confidential', [50, 50, 50], 'AI coding assistant', ['windsurf.com', 'codeium.com']],
+    ['Tabnine', 'Tabnine', 'Coding Assistant', 'Internal', [25, 30, 30], 'AI code completion', ['tabnine.com']],
+    ['Bolt.new', 'StackBlitz', 'Coding Assistant', 'Internal', [50, 50, 50], 'AI app builder', ['bolt.new']],
+    ['Lovable', 'Lovable', 'Coding Assistant', 'Internal', [50, 50, 50], 'AI app builder', ['lovable.dev']],
+    ['v0', 'Vercel', 'Coding Assistant', 'Internal', [40, 40, 40], 'AI UI generator', ['v0.dev']],
+    // ---- writing / productivity ----
+    ['Jasper', 'Jasper', 'Writing Assistant', 'Internal', [45, 45, 45], 'AI marketing copy', ['jasper.ai']],
+    ['Copy.ai', 'Copy.ai', 'Writing Assistant', 'Internal', [45, 45, 45], 'AI copywriting', ['copy.ai']],
+    ['Writesonic', 'Writesonic', 'Writing Assistant', 'Internal', [50, 50, 50], 'AI writing', ['writesonic.com']],
+    ['Writer', 'Writer', 'Writing Assistant', 'Internal', [20, 25, 25], 'Enterprise generative AI', ['writer.com']],
+    ['Grammarly', 'Grammarly', 'Writing Assistant', 'Confidential', [45, 40, 45], 'AI writing assistant (reads typed text)', ['grammarly.com']],
+    ['QuillBot', 'Learneo', 'Writing Assistant', 'Internal', [50, 45, 45], 'AI paraphrasing', ['quillbot.com']],
+    ['Gamma', 'Gamma', 'Presentation', 'Internal', [45, 45, 45], 'AI presentations', ['gamma.app']],
+    ['Otter.ai', 'Otter.ai', 'Meeting Assistant', 'Restricted / PII', [65, 55, 60], 'AI meeting transcription', ['otter.ai']],
+    ['Fireflies.ai', 'Fireflies', 'Meeting Assistant', 'Restricted / PII', [60, 55, 60], 'AI meeting notetaker', ['fireflies.ai']],
+    // ---- image / video / audio ----
+    ['Stability AI', 'Stability AI', 'Image Generation', 'Public', [50, 45, 45], 'Stable Diffusion and DreamStudio', ['stability.ai', 'dreamstudio.ai']],
+    ['Leonardo.Ai', 'Canva', 'Image Generation', 'Public', [55, 50, 50], 'AI image generation', ['leonardo.ai']],
+    ['Ideogram', 'Ideogram', 'Image Generation', 'Public', [55, 50, 50], 'AI image generation', ['ideogram.ai']],
+    ['Adobe Firefly', 'Adobe', 'Image Generation', 'Internal', [15, 15, 15], 'Adobe generative AI', ['firefly.adobe.com']],
+    ['Runway', 'Runway', 'Video Generation', 'Internal', [55, 50, 50], 'AI video generation', ['runwayml.com']],
+    ['Pika', 'Pika Labs', 'Video Generation', 'Public', [55, 50, 50], 'AI video generation', ['pika.art']],
+    ['Sora', 'OpenAI', 'Video Generation', 'Internal', [60, 50, 55], 'OpenAI video generation', ['sora.com']],
+    ['HeyGen', 'HeyGen', 'Video Generation', 'Confidential', [60, 55, 55], 'AI avatar video', ['heygen.com']],
+    ['Synthesia', 'Synthesia', 'Video Generation', 'Internal', [45, 40, 40], 'AI avatar video', ['synthesia.io']],
+    ['ElevenLabs', 'ElevenLabs', 'Audio Generation', 'Confidential', [55, 50, 55], 'AI voice and text-to-speech (voice cloning)', ['elevenlabs.io']],
+    ['Suno', 'Suno', 'Audio Generation', 'Public', [55, 50, 50], 'AI music generation', ['suno.com']],
+    ['Descript', 'Descript', 'Audio Generation', 'Internal', [45, 40, 40], 'AI audio/video editing', ['descript.com']],
+];

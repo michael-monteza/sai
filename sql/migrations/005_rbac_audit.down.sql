@@ -1,0 +1,10 @@
+ALTER TABLE audit_logs DROP INDEX idx_audit_action;
+ALTER TABLE audit_logs DROP COLUMN request_id;
+ALTER TABLE audit_logs DROP COLUMN ip_address;
+ALTER TABLE admin_users DROP COLUMN last_login_ip;
+ALTER TABLE admin_users DROP COLUMN password_changed_at;
+ALTER TABLE admin_users DROP COLUMN locked_until;
+ALTER TABLE admin_users DROP COLUMN failed_logins;
+ALTER TABLE admin_users DROP COLUMN email;
+UPDATE admin_users SET role = 'viewer' WHERE role = 'auditor';
+ALTER TABLE admin_users MODIFY role ENUM('super_admin','it_admin','viewer') NOT NULL DEFAULT 'viewer';

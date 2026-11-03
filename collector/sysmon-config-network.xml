@@ -1,0 +1,30 @@
+<!-- SAIP Sysmon configuration with network connections (Event ID 3) enabled.
+     Event ID 22 (DNS) is kept. Event ID 3 is limited to outbound HTTPS (port 443) and skips private/loopback addresses, so volume stays modest.
+     The collector keeps only connections to registered hosts or dedicated service addresses. Apply: Sysmon64.exe -c sysmon-config-network.xml -->
+<Sysmon schemaversion="4.90">
+  <EventFiltering>
+    <RuleGroup name="dns" groupRelation="or">
+      <DnsQuery onmatch="exclude">
+        <QueryName condition="end with">.local</QueryName>
+        <QueryName condition="end with">.arpa</QueryName>
+        <QueryName condition="end with">.windowsupdate.com</QueryName>
+        <QueryName condition="end with">.msftncsi.com</QueryName>
+      </DnsQuery>
+    </RuleGroup>
+    <RuleGroup name="net-in" groupRelation="or">
+      <NetworkConnect onmatch="include">
+        <DestinationPort condition="is">443</DestinationPort>
+      </NetworkConnect>
+    </RuleGroup>
+    <RuleGroup name="net-out" groupRelation="or">
+      <NetworkConnect onmatch="exclude">
+        <DestinationIp condition="is">127.0.0.1</DestinationIp>
+        <DestinationIp condition="begin with">10.</DestinationIp>
+        <DestinationIp condition="begin with">192.168.</DestinationIp>
+        <DestinationIp condition="begin with">169.254.</DestinationIp>
+        <DestinationIp condition="is">::1</DestinationIp>
+        <Initiated condition="is">false</Initiated>
+      </NetworkConnect>
+    </RuleGroup>
+  </EventFiltering>
+</Sysmon>

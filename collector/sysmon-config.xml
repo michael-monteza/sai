@@ -1,0 +1,27 @@
+<!-- Minimal Sysmon config: DNS queries (Event ID 22) only. -->
+<Sysmon schemaversion="4.90">
+  <EventFiltering>
+    <RuleGroup name="dns" groupRelation="or">
+      <DnsQuery onmatch="exclude">
+        <QueryName condition="end with">.local</QueryName>
+        <QueryName condition="end with">.arpa</QueryName>
+        <QueryName condition="end with">.windowsupdate.com</QueryName>
+        <QueryName condition="end with">.msftncsi.com</QueryName>
+      </DnsQuery>
+    </RuleGroup>
+    <!-- OPTIONAL Event ID 3 (network connections). Enable the same option in the console (Collectors > Monitoring),
+         then uncomment this block and run: Sysmon64.exe -c sysmon-config.xml. Volume is much higher than DNS;
+         the exclusions drop loopback and private ranges. The collector additionally keeps only registry-matched hosts.
+    <RuleGroup name="net" groupRelation="or">
+      <NetworkConnect onmatch="exclude">
+        <DestinationIp condition="is">127.0.0.1</DestinationIp>
+        <DestinationIp condition="begin with">10.</DestinationIp>
+        <DestinationIp condition="begin with">192.168.</DestinationIp>
+        <DestinationIp condition="begin with">169.254.</DestinationIp>
+        <DestinationIp condition="is">::1</DestinationIp>
+        <Initiated condition="is">false</Initiated>
+      </NetworkConnect>
+    </RuleGroup>
+    -->
+  </EventFiltering>
+</Sysmon>

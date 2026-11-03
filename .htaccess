@@ -1,0 +1,14 @@
+Options -Indexes
+<IfModule mod_rewrite.c>
+RewriteEngine On
+# Never serve application internals, configuration, SQL, tooling or backups.
+RewriteRule ^(app|config|sql|tools|tests|vendor|legacy-v1|legacy|src|dist)(/|$) - [R=404,L]
+RewriteRule ^(composer\.(json|lock)|README\.md|AdminGuide-README\.md)$ - [R=404,L]
+RewriteRule \.(sql|bak|log|ini|env|txt|md)$ - [R=404,L]
+# Everything that is not a real file goes to the Slim front controller.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+</IfModule>
+<IfModule mod_headers.c>
+Header always unset X-Powered-By
+</IfModule>

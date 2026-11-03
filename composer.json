@@ -1,0 +1,8 @@
+{
+  "name": "saip/shadow-ai-platform",
+  "description": "Shadow AI Platform (Slim 4)",
+  "type": "project",
+  "require": { "php": ">=8.2", "ext-pdo": "*", "slim/slim": "^4.14", "slim/psr7": "^1.7" },
+  "autoload": { "psr-4": { "Saip\\": "app/" } },
+  "config": { "optimize-autoloader": true, "sort-packages": true }
+}

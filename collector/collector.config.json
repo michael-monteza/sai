@@ -1,0 +1,14 @@
+{
+  "serverUrl": "http://YOUR-SERVER:8080/2026/saip/api/v1",
+  "enrollmentKey": "CHANGE-ME-enrollment-key",
+  "allowInsecureHttp": true,
+  "dataDir": "C:\\ProgramData\\SaipCollector",
+  "intervalMinutes": 5,
+  "batchSize": 200,
+  "maxEventsPerRun": 5000,
+  "firstRunLookbackMinutes": 10,
+  "collectMacAddress": true,
+  "retryAttempts": 4,
+  "retryBaseDelaySeconds": 5,
+  "spoolMaxFiles": 500
+}
