@@ -140,6 +140,19 @@ Choose *Fresh install with demo data* in the wizard, or run `php tools/loaddemod
    ```
    Browser lookups should be listed. Browsers pick up the policy at their **next start** (fully quit and reopen; `-RestartBrowsers` does it for you but loses unsaved browser work).
 
+**Registry and browser settings (set automatically by the installer)**
+
+Chromium browsers can resolve names with their own DNS client or DNS-over-HTTPS, which bypasses Windows and Sysmon event 22, so the AI site would never be seen. Step 5 of `Install-Collector.ps1` therefore writes these machine policies (skipped with `-SkipBrowserPolicy`):
+
+| Browser | Key under `HKLM:\SOFTWARE\Policies` | Values |
+|---|---|---|
+| Chrome | `Google\Chrome` | `BuiltInDnsClientEnabled=0` (DWord), `DnsOverHttpsMode="off"` (String) |
+| Edge | `Microsoft\Edge` | `BuiltInDnsClientEnabled=0`, `DnsOverHttpsMode="off"` |
+| Brave | `BraveSoftware\Brave` | `BuiltInDnsClientEnabled=0`, `DnsOverHttpsMode="off"` |
+| Firefox | `Mozilla\Firefox\DNSOverHTTPS` | `Enabled=0`, `Locked=1` |
+
+The previous values are saved to `C:\ProgramData\SaipCollector\browser-policy.json` and restored by `Uninstall-Collector.ps1` (unless `-KeepBrowserPolicy`). Browsers read policies at start-up, so restart them. Nothing else on the PC is changed (no firewall or security settings). If group policy forces DNS-over-HTTPS in your domain, it conflicts with these values and must be adjusted there. Sysmon itself is installed by `Install-Sysmon.ps1` (event 22 log: `Microsoft-Windows-Sysmon/Operational`).
+
 **Installer options**
 
 | Option | Meaning |
@@ -166,6 +179,14 @@ foreach ($pc in $pcs) {
 Always pilot on one or two machines first. Authorize collectors in the console (or set `auto_authorize` only in a lab).
 
 **Update:** run `Install-Collector.ps1` again from a newer package (settings are kept). **Remove:** `C:\Tools\SaipCollector\Uninstall-Collector.ps1 [-RemoveSysmon] [-RemoveData]`; it restores the browser policies it changed.
+
+**Re-enrolling a PC after deleting it in the console.** Deleting a workstation also deletes its API key on the server. The PC keeps sending the old key and gets `HTTP 401 events/ingest: Invalid collector credentials` in `C:\ProgramData\SaipCollector\collector-error.log`. To monitor it again, on that PC (PowerShell as Administrator):
+```powershell
+Remove-Item C:\ProgramData\SaipCollector\credential.dat, C:\ProgramData\SaipCollector\state.json -Force -ErrorAction SilentlyContinue
+cd C:\Tools\SaipCollector
+.\Install-Collector.ps1 -EnrollmentKey "<current enrollment key>"
+```
+Then authorize the PC again in **Collectors & Monitoring**. If the log says `Invalid enrollment key`, the key in `collector.config.json` is wrong or was regenerated: use *Regenerate enrollment key* in the console and pass the new one. Run the collector by hand with `.\Collect-AiUsage.ps1 -Verbose` (add `-DryRun` to send nothing); the scheduled task is `SAIP-AI-Usage-Collector`.
 
 **Collector troubleshooting**
 
@@ -220,6 +241,8 @@ The suite covers ingest, RBAC, tenant isolation, CSRF, injection and audit behav
 | 404 on every page | `mod_rewrite` / `AllowOverride All`, correct sub-path |
 | Cannot sign in after enabling HTTPS | clear cookies (name becomes `__Host-saip_sid`); make sure PHP sees HTTPS behind a proxy (`trusted_proxies`) |
 | Google "state mismatch" | redirect URI in Google Cloud must match exactly; correct server clock; user's email exists in SAIP |
+| `/auth/google` shows `server_error` | fixed in 2.0.0 (missing `Config` import in `GoogleAuth.php`); if you see it on an older copy, update the files. The real cause is always in the error log under the request id |
+| Google `redirect_uri_mismatch` | the redirect URI is `<base_url>/auth/google/callback`, using `base_url` from `config/config.php` (set by the installer) unless overridden in Administration → Authentication. Register exactly that URI in Google Cloud Console (scheme, host, port and path); if you later change the site address, update `base_url` and the Google console |
 | Secrets cannot be decrypted | `config/app.key` differs from the one used when they were saved |
 
 ## Repository layout
